@@ -1,4 +1,6 @@
-# Strimzi ZooKeeper Entrance
+# ZooKeeper Entrance
+
+**This is not part of the Strimzi project!**
 
 [Strimzi](https://strimzi.io) is a CNCF project which provides an operator for Apache Kafka.
 When Strimzi deploys the Kafka cluster, it keeps the ZooKeeper secure and inaccessible from any other application.
