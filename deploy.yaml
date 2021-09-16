@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: zoo-entrance
-          image: 'docker.io/scholzj/zoo-entrance:latest'
+          image: 'ghcr.io/scholzj/zoo-entrance:latest'
           command:
             - /opt/stunnel/stunnel_run.sh
           ports:

@@ -35,7 +35,7 @@ In all cases, just replace `my-cluster` with the name of your cluster.
 
 ## Building the image
 
-The Docker image is available on Docker Hub under `docker.io/scholzj/zoo-entrance:latest`.
+The Docker image is available on Docker Hub under `ghcr.io/scholzj/zoo-entrance:latest`.
 If you want to build your own, you can use `make` for it.
 
 Define following environment variables:
