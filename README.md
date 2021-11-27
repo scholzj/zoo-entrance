@@ -40,7 +40,7 @@ If you want to build your own, you can use `make` for it.
 
 Define following environment variables:
 * `DOCKER_REGISTRY` with the Docker registry you want to use (e.g. `docker.io`)
-* `DOCKER_ORG` with the name of your Docker organization (e-g- `scholzj`)
+* `DOCKER_ORG` with the name of your Docker organization (e.g. `scholzj`)
 * `DOCKER_IMAGE` with he name of the image (e.g. `zoo-entrance`)
 * `DOCKER_TAG` with the tag (e.g. `latest`)
 
