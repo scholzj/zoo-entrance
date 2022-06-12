@@ -1,0 +1,80 @@
+version: 2.1
+
+jobs:
+  build-amd64:
+    resource_class: medium
+    machine:
+      image: ubuntu-2004:202111-01
+    environment:
+      USER: scholzj
+      DOCKER_TAG: latest-amd64
+      DOCKER_REGISTRY: ghcr.io
+    steps:
+      - checkout
+      - run:
+          name: Build Docker images
+          command: make docker_build
+      - deploy:
+          name: Login to Docker Hub
+          command: docker login ghcr.io -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      - deploy:
+          name: Push to Docker hub
+          command: make docker_push
+  build-arm64:
+    resource_class: arm.medium
+    machine:
+      image: ubuntu-2004:202101-01
+    environment:
+      USER: scholzj
+      DOCKER_TAG: latest-arm64
+      DOCKER_REGISTRY: ghcr.io
+    steps:
+      - checkout
+      - run:
+          name: Build Docker images
+          command: make docker_build
+      - deploy:
+          name: Login to Docker Hub
+          command: docker login ghcr.io -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      - deploy:
+          name: Push to Docker hub
+          command: make docker_push
+  build-manifests:
+    resource_class: medium
+    docker:
+      - image: docker:stable-git
+    environment:
+      DOCKER_CLI_EXPERIMENTAL: enabled
+      DOCKER_BUILDKIT: 1
+    steps:
+      - setup_remote_docker:
+          version: 20.10.7
+      - run:
+          name: Pull images
+          command: |
+              docker pull ghcr.io/scholzj/zoo-entrance:latest-amd64
+              docker pull ghcr.io/scholzj/zoo-entrance:latest-arm64
+      - run:
+          name: Create manifest
+          command: |
+              docker manifest create ghcr.io/scholzj/zoo-entrance:latest ghcr.io/scholzj/zoo-entrance:latest-amd64 ghcr.io/scholzj/zoo-entrance:latest-arm64
+      - deploy:
+          name: Login to Docker Hub
+          command: docker login ghcr.io -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      - deploy:
+          name: Push manifest
+          command: |
+            docker manifest push ghcr.io/scholzj/zoo-entrance:latest
+
+workflows:
+  build-workflow:
+    jobs:
+      - build-amd64:
+          context: ghcr.io
+      - build-arm64:
+          context: ghcr.io
+      - build-manifests:
+          context: ghcr.io
+          requires:
+            - build-amd64
+            - build-arm64
