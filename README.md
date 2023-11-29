@@ -23,7 +23,7 @@ That creates the deployment with the proxy named `zoo-entrance`, a service named
 You should deploy it into the same namespace where the Kafka cluster runs.
 From your application, you can just connect to `zoo-entrance:2181` or from another namespace to `zoo-entrance.<namespce>.svc:2181`.
 
-The deployment by default expects it is connecting to Strimzi deployed Kafka cluster named `my-cluster`.
+The deployment by default expects it is connecting to a Strimzi deployed Kafka cluster named `my-cluster`.
 When your cluster has a different name, you have to change the deployment:
 
 * The `STRIMZI_ZOOKEEPER_CONNECT` environment variable (line 32)
