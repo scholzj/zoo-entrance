@@ -1,0 +1,49 @@
+name: Build Kafka Test Apps
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    env:
+      DOCKER_REGISTRY: ghcr.io
+      DOCKER_ORG: ${{ github.actor }}
+      DOCKER_TAG: latest
+
+    steps:
+      # Checkout sources
+      - uses: actions/checkout@v3
+
+      # Setup QEMU for multiplatform Docker builds
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Setup Docker credentials
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Build the Container images
+      - name: Build and push the containers for amd64
+        run: make docker_build docker_push docker_amend_manifest
+        env:
+          DOCKER_ARCHITECTURE: amd64
+      - name: Build and push the containers for arm64
+        run: make docker_build docker_push docker_amend_manifest
+        env:
+          DOCKER_ARCHITECTURE: arm64
+
+      # Push the container manifest
+      - name: Push the container manifest
+        run: make docker_push_manifest
