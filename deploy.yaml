@@ -37,7 +37,7 @@ spec:
                 - /opt/stunnel/stunnel_healthcheck.sh
                 - '2181'
             failureThreshold: 3
-            initialDelaySeconds: 15
+            initialDelaySeconds: 5
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 5
@@ -47,7 +47,7 @@ spec:
                 - /opt/stunnel/stunnel_healthcheck.sh
                 - '2181'
             failureThreshold: 3
-            initialDelaySeconds: 15
+            initialDelaySeconds: 5
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 5
