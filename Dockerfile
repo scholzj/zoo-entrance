@@ -6,9 +6,9 @@ LABEL org.opencontainers.image.description="Stunnel proxy for exposing ZooKeeper
 
 USER root:root
 
-RUN microdnf update \
+RUN microdnf update -y \
     && microdnf --setopt=install_weak_deps=0 --setopt=tsflags=nodocs install -y stunnel net-tools \
-    && microdnf clean all
+    && microdnf clean all -y
 
 ENV STUNNEL_HOME=/opt/stunnel
 RUN mkdir $STUNNEL_HOME && mkdir -p -m g+rw /usr/local/var/run/
